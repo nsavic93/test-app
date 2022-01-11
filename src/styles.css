@@ -1,0 +1,66 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  padding-top: 300px;
+}
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+.custom-day {
+  text-align: center;
+  padding: 0.185rem 0.25rem;
+  display: inline-block;
+  height: 2rem;
+  width: 2rem;
+}
+.custom-day.focused {
+  background-color: #e6e6e6;
+}
+.custom-day.range,
+.custom-day:hover {
+  background-color: rgb(2, 117, 216);
+  color: white;
+}
+.custom-day.faded {
+  background-color: rgba(2, 117, 216, 0.5);
+}
+.main-page {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  padding-top: 100px;
+  
+  
+}
+.h1-main {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.date-picker {
+  width: 20%;
+  margin: 30px;
+  flex-wrap: wrap;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+}
+.map {
+  width: 70%;
+  background-color: rgb(143, 143, 143);
+  height: 600px;
+}

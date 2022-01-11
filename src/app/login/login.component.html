@@ -1,0 +1,8 @@
+<div class="login-page" *ngIf='!isLog'>
+ 
+  <div class="login-form login-form">
+    <input style="margin-top: 10px;" class="form-control" placeholder="Username" type="text" [(ngModel)]="username" />
+    <input style="margin-top: 10px;" class="form-control" placeholder="Password" type="password" [(ngModel)]="password"/>
+    <button style="margin-top: 10px;" (click)="login()" class="btn btn-primary">Login</button>
+  </div>
+</div>

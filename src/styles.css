@@ -61,6 +61,19 @@ body {
 }
 .map {
   width: 70%;
-  background-color: rgb(143, 143, 143);
+  /* background-color: rgb(143, 143, 143); */
   height: 600px;
+  z-index: 0;
 }
+#map {
+  width: 500px;
+  height: 500px;
+  
+  z-index: 5;
+}
+.right-sidebar-container { 
+  background-color: rgba(2, 117, 216, 0.5);
+  /* width: 500px; */
+}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

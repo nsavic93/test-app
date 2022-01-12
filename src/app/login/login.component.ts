@@ -17,10 +17,8 @@ export class LoginComponent {
   get isLog():boolean {
     return this.loginService.isLog;
   }
-  login() {
-    
+  login() { 
     this.loginService.log(this.username,this.password)
     console.log("OK");
-    
   }
 }

@@ -1,133 +1,153 @@
 import { Component } from '@angular/core';
-import { LoginService } from '../login/login.service';
-import { DataService } from './data.service';
-import { NgbDate, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
+import { LoginService } from '../service/login.service';
+import { DataService } from '../service/data.service';
 import { AfterViewInit } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import * as L from 'leaflet';
+
+declare function getCity(res);
+declare function initMap();
 @Component({
   selector: 'main-component',
   templateUrl: './main.component.html',
   styleUrls: ['../app.component.css'],
 })
 export class MainComponent implements AfterViewInit {
+  user_id: any;
+  isGpsUser: any;
+  allCarsHistory: Object;
+  citiesHistory: any[];
   constructor(
     private loginService: LoginService,
     private dataService: DataService,
-    calendar: NgbCalendar
-  ) {
-    this.fromDate = calendar.getToday();
-    this.toDate = calendar.getNext(calendar.getToday(), 'd', 5);
-  }
-
-  hoveredDate: NgbDate | null = null;
-
-  fromDate: NgbDate;
-  toDate: NgbDate | null = null;
-
+    public datepipe: DatePipe
+  ) {}
   startDate;
   endDate;
-
-  unitId = 777777007775;
+  data;
+  unitId;
   token;
   private map;
   polyline;
-  latlngs: [number, number][] = [
-    [45.51, -122.68],
-    [37.77, -122.43],
-    [34.04, -118.2],
-  ];
+  arrayCities = [];
+  historyPolyLine = [];
+  draw = false;
 
   ngAfterViewInit(): void {
-    this.initMap();
+    this.map = initMap();
   }
   ngOnInit() {
     this.getToken();
     this.loginService.checkToken();
     this.setDefault();
-  }
-  initMap() {
-    this.map = L.map('map').setView(
-      [44.785000000000004, 20.527833333333334],
-      15
-    );
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution:
-        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    }).addTo(this.map);
-  }
-  getPolyLine() {
-    console.log(this.dataService.draw);
-    if (this.polyline != null) {
-      this.polyline.removeFrom(this.map);
-      this.polyline.remove(this.map);
-      this.map.removeLayer(this.polyline);
-    }
-    if (this.dataService.draw) {
-      this.polyline = L.polyline(this.dataService.historyPolyLine, {
-        color: '#006eff',
-        smoothFactor: 0,
-      }).addTo(this.map);
-      this.map.fitBounds(this.polyline.getBounds());
-    } 
+    this.getAllCars();
+    this.startDate = new Date();
+    this.endDate = new Date(this.startDate);
+    this.endDate.setDate(this.startDate.getDate() + 1);
   }
 
-  setDefault() {
-    this.startDate =
-      this.fromDate.year + '-' + this.fromDate.month + '-' + this.fromDate.day;
-    this.endDate =
-      this.toDate.year + '-' + this.toDate.month + '-' + this.toDate.day;
+  getPolyLine() {
+    this.polyline = L.polyline(this.historyPolyLine, {
+      color: '#006eff',
+      smoothFactor: 0,
+    }).addTo(this.map);
+    this.map.fitBounds(this.polyline.getBounds());
   }
+
+  setDefault() {}
   getToken() {
     this.token = this.loginService.token;
+    this.user_id = this.loginService.user_id;
+    this.isGpsUser = this.loginService.isGpsUser;
   }
   get isLog(): boolean {
     return this.loginService.isLog;
   }
-  submit() {
-    this.dataService.submit(
-      this.unitId,
-      this.startDate,
-      this.endDate,
-      this.token
-    );
-
-    this.getPolyLine();
+  getAllCars() {
+    this.dataService.getAllCars().subscribe((res) => {
+      this.allCarsHistory = res;
+      console.log(res);
+    });
   }
-  onDateSelection(date: NgbDate) {
-    if (!this.fromDate && !this.toDate) {
-      this.fromDate = date;
-      this.startDate = date.year + '-' + date.month + '-' + date.day;
-    } else if (this.fromDate && !this.toDate && date.after(this.fromDate)) {
-      this.toDate = date;
-      this.endDate = date.year + '-' + date.month + '-' + date.day;
-    } else {
-      this.toDate = null;
-      this.fromDate = date;
-      this.startDate = date.year + '-' + date.month + '-' + date.day;
-      this.endDate = null;
+  changeUnitId(unitId) {
+    this.unitId = unitId;
+    this.submit();
+  }
+  submit() {
+    if (this.startDate != null && this.endDate != null) {
+      this.startDate = this.datepipe.transform(this.startDate, 'yyyy-MM-dd');
+      this.endDate = this.datepipe.transform(this.endDate, 'yyyy-MM-dd');
+      if (this.polyline != null) {
+        this.map.removeLayer(this.polyline);
+      }
+      this.dataService
+        .getData(this.unitId, this.startDate, this.endDate, this.token)
+        .subscribe((res) => {
+          console.log(res);
+          this.historyPolyLine = [];
+          console.log(res.length);
+          if (res.length > 0) {
+            this.getCity(res);
+          }
+
+          // this.unitHistory
+          if (res.length > 0) {
+            res.forEach((item) => {
+              let array = [item.latitude, item.longitude];
+              this.historyPolyLine.push(
+                // new L.LatLng(item.latitude, item.longitude)
+                array
+              );
+            });
+            this.getPolyLine();
+          } else {
+            this.draw = false;
+          }
+
+          console.log(this.historyPolyLine);
+        });
     }
   }
 
-  isHovered(date: NgbDate) {
-    return (
-      this.fromDate &&
-      !this.toDate &&
-      this.hoveredDate &&
-      date.after(this.fromDate) &&
-      date.before(this.hoveredDate)
-    );
-  }
+  getCity(data) {
+    let arrayCities = [];
+    let finalArray = [];
+    let add = false;
+    for (let i = 0; i < data.length; i++) {
+      let obj = {
+        country: data[i].drzava,
+        city: data[i].grad,
+      };
 
-  isInside(date: NgbDate) {
-    return this.toDate && date.after(this.fromDate) && date.before(this.toDate);
-  }
+      arrayCities.push(obj);
+    }
+    let obj = {
+      country: arrayCities[0].country,
+      city: arrayCities[0].city,
+    };
+    finalArray.push(obj);
+    for (let i = 0; i < arrayCities.length; i++) {
+      if (finalArray.length > 0) {
+        for (let j = 0; j < finalArray.length; j++) {
+          if (finalArray[j].city !== arrayCities[i].city) {
+            add = true;
+          } else {
+            add = false;
+            break;
+          }
+        }
+      }
+      if (add == true) {
+        let obj = {
+          country: arrayCities[i].country,
+          city: arrayCities[i].city,
+        };
 
-  isRange(date: NgbDate) {
-    return (
-      date.equals(this.fromDate) ||
-      (this.toDate && date.equals(this.toDate)) ||
-      this.isInside(date) ||
-      this.isHovered(date)
-    );
+        finalArray.push(obj);
+        add = false;
+      }
+    }
+    console.log(finalArray);
+    this.citiesHistory = finalArray;
   }
 }

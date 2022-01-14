@@ -1,35 +1,56 @@
 <div class="main-page" *ngIf="isLog">
-  <h1 class="h1-main">Main page</h1>
   <div class="date-picker">
-    <!-- <input type="date" [(ngModel)]='startDate'>
-    <input type="date" [(ngModel)]='endDate'> -->
+    <div *ngIf="unitId != null" class="date-picker-div">
+      <mat-form-field appearance="fill">
+        <mat-label>Enter a date range</mat-label>
+        <mat-date-range-input [rangePicker]="picker">
+          <input
+            matStartDate
+            placeholder="Start date"
+            [(ngModel)]="startDate"
+          />
+          <input
+            matEndDate
+            placeholder="End date"
+            [(ngModel)]="endDate"
+            (dateChange)="submit()"
+          />
+        </mat-date-range-input>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+      </mat-form-field>
 
-    <ngb-datepicker
-      #dp
-      (dateSelect)="onDateSelection($event)"
-      [displayMonths]="1"
-      [dayTemplate]="t"
-      outsideDays="hidden"
-    >
-    </ngb-datepicker>
+      <div>{{ startDate }}</div>
+      <div>{{ endDate }}</div>
 
-    <ng-template #t let-date let-focused="focused">
-      <span
-        class="custom-day"
-        [class.focused]="focused"
-        [class.range]="isRange(date)"
-        [class.faded]="isHovered(date) || isInside(date)"
-        (mouseenter)="hoveredDate = date"
-        (mouseleave)="hoveredDate = null"
-      >
-        {{ date.day }}
-      </span>
-    </ng-template>
+      <!-- <button class="btn btn-primary" (click)="submit()">Submit</button> -->
+    </div>
+    <div class="list-of-cars-div">
+      <div *ngFor="let car of allCarsHistory; index as i">
+        <button (click)="changeUnitId(car.unit_id)">{{ car.reg_broj }}</button>
+      </div>
+    </div>
+    <div>
+      <div class="table-wrapper">
+        <table class="table">
+          <thead class="thead">
+            <tr class="table-tr">
+              <th class="table-th">Drzava</th>
+              <th  class="table-th">Grad</th>
+            </tr>
+          </thead>
 
-    <div>{{ startDate }}</div>
-    <div>{{ endDate }}</div>
-
-    <button class="btn btn-primary" (click)="submit()">Submit</button>
+          <tr *ngFor="let city of citiesHistory; index as i">
+            <td>
+              {{ city.country }}
+            </td>
+            <td>
+              {{ city.city }}
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
   </div>
   <div class="right-sidebar-container">
     <div id="map"></div>

@@ -40,8 +40,8 @@ body {
 .main-page {
   width: 100%;
   display: flex;
-  flex-wrap: wrap;
-  padding-top: 100px;
+  /* flex-wrap: wrap; */
+  padding-top: 0px;
   
   
 }
@@ -51,29 +51,44 @@ body {
     justify-content: center;
 }
 .date-picker {
-  width: 20%;
+  width: 30%;
   margin: 30px;
   flex-wrap: wrap;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-content: center;
   flex-direction: column;
+  /* background-color: #333131; */
+
 }
 .map {
   width: 70%;
   /* background-color: rgb(143, 143, 143); */
   height: 600px;
-  z-index: 0;
+  /* z-index: 0; */
 }
 #map {
-  width: 500px;
-  height: 500px;
+ 
+  height: 94vh;
   
   z-index: 5;
 }
 .right-sidebar-container { 
   background-color: rgba(2, 117, 216, 0.5);
-  /* width: 500px; */
+  width: 100%;
 }
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.table-wrapper{
+  width: 100%;
+  overflow-y:scroll;
+  height:300px;
+  display:block;
+}
+
+.date-picker-div, .table, .list-of-cars-div  {
+  width: 100%;
+}
+.table-th{
+  width: 50%;
+}

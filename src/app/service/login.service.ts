@@ -11,6 +11,8 @@ export class LoginService implements OnInit {
   isLog: boolean = false;
   user;
   token;
+  user_id: any;
+  isGpsUser: any;
 
   constructor(private http: HttpClient, private route: Router) {}
   private isUserLoggedIn: boolean = false;
@@ -26,12 +28,12 @@ export class LoginService implements OnInit {
   }
   checkToken() {
     console.log(localStorage.getItem('token'));
-    
+
     if (localStorage.getItem('token') != null) {
       this.token = localStorage.getItem('token');
-      this.isLog = true
+      this.isLog = true;
     } else {
-      this.isLog = false
+      this.isLog = false;
       this.route.navigate(['/login']);
     }
     console.log(this.token);
@@ -54,6 +56,8 @@ export class LoginService implements OnInit {
         console.log(res);
         this.isLog = true;
         this.token = res.token;
+        localStorage.setItem('user_id', res.userId);
+        localStorage.setItem('isGpsUser', res.isGpsUser);
         localStorage.setItem('token', this.token);
         this.route.navigate(['/main']);
       } else {
@@ -63,8 +67,9 @@ export class LoginService implements OnInit {
   }
   logOut() {
     localStorage.clear();
-    console.log(localStorage.getItem('token'));
     this.isLog = false;
+    this.user_id = null;
+    this.isGpsUser = false;
     this.route.navigate(['/login']);
   }
 }

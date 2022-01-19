@@ -3,7 +3,8 @@
 .login-page {
   display: flex;
   justify-content: center;
-  align-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 .login-form {
@@ -69,7 +70,7 @@ body {
 }
 #map {
  
-  height: 94vh;
+  height: 103vh;
   
   z-index: 5;
 }

@@ -16,6 +16,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 import { DatePipe } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [AppComponent, LoginComponent, MainComponent],
@@ -32,6 +33,7 @@ import { DatePipe } from '@angular/common';
     MatInputModule,
     MatNativeDateModule,
     FormsModule,
+    MatButtonModule
   ],
   providers: [LoginService, DataService, DatePipe],
   bootstrap: [AppComponent],

@@ -7,18 +7,25 @@ import { LoginService } from '../service/login.service';
   styleUrls: ['../app.component.css'],
 })
 export class LoginComponent {
-  constructor(
-    private loginService: LoginService,
-    
-  ) {}
-  
+  usersFromDb;
+  constructor(private loginService: LoginService) {}
+  ngOnInit() {
+    this.getUsersFromApi();
+  }
+
   username;
   password;
-  get isLog():boolean {
+  get isLog(): boolean {
     return this.loginService.isLog;
   }
-  login() { 
-    this.loginService.log(this.username,this.password)
-    console.log("OK");
+  login() {
+    this.loginService.log(this.username, this.password);
+    console.log('OK');
+  }
+  getUsersFromApi() {
+    this.loginService.getUsers().subscribe((response) => {
+      console.log(response);
+      this.usersFromDb = response;
+    });
   }
 }

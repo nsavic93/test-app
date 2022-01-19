@@ -72,4 +72,7 @@ export class LoginService implements OnInit {
     this.isGpsUser = false;
     this.route.navigate(['/login']);
   }
+  getUsers(){
+    return this.http.get('http://localhost:3000/users')
+  }
 }

@@ -5,4 +5,22 @@
     <input style="margin-top: 10px;" class="form-control" placeholder="Password" type="password" [(ngModel)]="password"/>
     <button style="margin-top: 10px;" (click)="login()" class="btn btn-primary">Login</button>
   </div>
+
+  <table class="table" style="width: 60%; margin-top:100px">
+    <thead>
+      <tr>
+        
+        <th scope="col">Firstname</th>
+        <th scope="col">Lastname</th>
+        <th scope="col">Location</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of usersFromDb">
+        <td >{{ user.usr_firstname }}</td>
+        <td >{{ user.usr_lastname }}</td>
+        <td >{{ user.usr_location }}</td>
+      </tr>
+    </tbody>
+  </table>
 </div>

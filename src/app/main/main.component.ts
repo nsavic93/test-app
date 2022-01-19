@@ -5,8 +5,9 @@ import { AfterViewInit } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import * as L from 'leaflet';
 
-declare function getCity(res);
 declare function initMap();
+declare function getPolyLine(historyPolyLine);
+declare function clearMap();
 @Component({
   selector: 'main-component',
   templateUrl: './main.component.html',
@@ -27,34 +28,24 @@ export class MainComponent implements AfterViewInit {
   data;
   unitId;
   token;
-  private map;
-  polyline;
   arrayCities = [];
   historyPolyLine = [];
-  draw = false;
 
   ngAfterViewInit(): void {
-    this.map = initMap();
+    initMap();
   }
   ngOnInit() {
     this.getToken();
     this.loginService.checkToken();
-    this.setDefault();
     this.getAllCars();
+    this.getToday();
+  }
+  getToday() {
     this.startDate = new Date();
     this.endDate = new Date(this.startDate);
     this.endDate.setDate(this.startDate.getDate() + 1);
   }
 
-  getPolyLine() {
-    this.polyline = L.polyline(this.historyPolyLine, {
-      color: '#006eff',
-      smoothFactor: 0,
-    }).addTo(this.map);
-    this.map.fitBounds(this.polyline.getBounds());
-  }
-
-  setDefault() {}
   getToken() {
     this.token = this.loginService.token;
     this.user_id = this.loginService.user_id;
@@ -64,48 +55,47 @@ export class MainComponent implements AfterViewInit {
     return this.loginService.isLog;
   }
   getAllCars() {
-    this.dataService.getAllCars().subscribe((res) => {
-      this.allCarsHistory = res;
-      console.log(res);
-    });
+    this.dataService.getAllCars().subscribe(
+      (res) => {
+        this.allCarsHistory = res;
+        console.log(res);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
   }
   changeUnitId(unitId) {
     this.unitId = unitId;
     this.submit();
   }
   submit() {
+    let historyPolyLine = [];
     if (this.startDate != null && this.endDate != null) {
       this.startDate = this.datepipe.transform(this.startDate, 'yyyy-MM-dd');
       this.endDate = this.datepipe.transform(this.endDate, 'yyyy-MM-dd');
-      if (this.polyline != null) {
-        this.map.removeLayer(this.polyline);
-      }
+      clearMap();
       this.dataService
-        .getData(this.unitId, this.startDate, this.endDate, this.token)
-        .subscribe((res) => {
-          console.log(res);
-          this.historyPolyLine = [];
-          console.log(res.length);
-          if (res.length > 0) {
-            this.getCity(res);
-          }
+        .getHistory(this.unitId, this.startDate, this.endDate, this.token)
+        .subscribe(
+          (res) => {
+            console.log(res);
 
-          // this.unitHistory
-          if (res.length > 0) {
-            res.forEach((item) => {
-              let array = [item.latitude, item.longitude];
-              this.historyPolyLine.push(
-                // new L.LatLng(item.latitude, item.longitude)
-                array
-              );
-            });
-            this.getPolyLine();
-          } else {
-            this.draw = false;
+            console.log(res.length);
+            if (res.length > 0) {
+              this.getCity(res);
+              res.forEach((item) => {
+                let array = [item.latitude, item.longitude];
+                historyPolyLine.push(array);
+              });
+              getPolyLine(historyPolyLine);
+            }
+            console.log(historyPolyLine);
+          },
+          (err) => {
+            console.log(err);
           }
-
-          console.log(this.historyPolyLine);
-        });
+        );
     }
   }
 
@@ -126,6 +116,8 @@ export class MainComponent implements AfterViewInit {
       city: arrayCities[0].city,
     };
     finalArray.push(obj);
+    
+    
     for (let i = 0; i < arrayCities.length; i++) {
       if (finalArray.length > 0) {
         for (let j = 0; j < finalArray.length; j++) {

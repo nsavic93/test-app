@@ -1,6 +1,6 @@
 <div class="main-page" *ngIf="isLog">
   <div class="date-picker">
-    <div *ngIf="unitId != null" class="date-picker-div">
+    <div  class="date-picker-div">
       <mat-form-field appearance="fill">
         <mat-label>Enter a date range</mat-label>
         <mat-date-range-input [rangePicker]="picker">
@@ -20,17 +20,17 @@
         <mat-date-range-picker #picker></mat-date-range-picker>
       </mat-form-field>
 
-      <div>{{ startDate }}</div>
-      <div>{{ endDate }}</div>
+      <!-- <div>{{ startDate }}</div>
+      <div>{{ endDate }}</div> -->
 
       <!-- <button class="btn btn-primary" (click)="submit()">Submit</button> -->
     </div>
     <div class="list-of-cars-div">
       <div *ngFor="let car of allCarsHistory; index as i">
-        <button (click)="changeUnitId(car.unit_id)">{{ car.reg_broj }}</button>
+        <button class="mat-focus-indicator mat-raised-button mat-button-base mat-primary" style="margin-top: 5px;" (click)="changeUnitId(car.unit_id)">{{ car.reg_broj }}</button>
       </div>
     </div>
-    <div>
+    <div style="margin-top: 5px;">
       <div class="table-wrapper">
         <table class="table">
           <thead class="thead">

@@ -1,0 +1,92 @@
+<div class="users-component">
+  <button style="width: 30%; align-self: flex-start;" mat-button (click)="routerNavigateToMain()">Back</button>
+  <h1 style="align-self: center">USERS</h1>
+  <table class="table table-dark" style="width: 100%; margin-top: 50px">
+    <thead>
+      <tr>
+        <th scope="col">Firstname</th>
+        <th scope="col">Lastname</th>
+        <th scope="col">Options</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of usersFromDb | async">
+        <td>{{ user.usr_firstname }}</td>
+        <td>{{ user.usr_lastname }}</td>
+
+        <td>
+          <div class="options-div">
+            <button class="optionsButton" (click)="openEditForm(user.usr_id)">
+              <fa-icon [icon]="faUserEdit"></fa-icon>
+            </button>
+            <button class="optionsButton" (click)="deleteUser(user.usr_id)">
+              <fa-icon [icon]="faTrashAlt"></fa-icon>
+            </button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <button class="mat-raised-button mat-button-base mat-primary" style="width: 60%; align-self: center;" (click)="openCreateForm()">Add New</button>
+</div>
+
+<div class="user-component-create" *ngIf="toggleCreateForm">
+  <div class="user-component-create-form">
+    <input
+      type="text"
+      placeholder="Firstname"
+      class="user-component-create-form-input"
+      [(ngModel)]="firstname"
+    />
+    <input
+      type="text"
+      placeholder="Lastname"
+      class="user-component-create-form-input"
+      [(ngModel)]="lastname"
+    />
+    <input
+      type="text"
+      placeholder="Location"
+      class="user-component-create-form-input"
+      [(ngModel)]="location"
+    />
+    <button class="user-component-create-form-button" (click)="createNewUser()">
+      ADD
+    </button>
+    <button
+      class="user-component-create-form-button"
+      (click)="closeCreateForm()"
+    >
+      CANCEL
+    </button>
+  </div>
+</div>
+
+<div class="user-component-create" *ngIf="toggleEditForm">
+  <div class="user-component-create-form">
+    <input
+      type="text"
+      placeholder="Firstname"
+      class="user-component-create-form-input"
+      [(ngModel)]="firstname"
+    />
+    <input
+      type="text"
+      placeholder="Lastname"
+      class="user-component-create-form-input"
+      [(ngModel)]="lastname"
+    />
+    <input
+      type="text"
+      placeholder="Location"
+      class="user-component-create-form-input"
+      [(ngModel)]="location"
+    />
+    <button class="user-component-create-form-button" (click)="editUser()">
+      Save
+    </button>
+    <button class="user-component-create-form-button" (click)="closeEditForm()">
+      CANCEL
+    </button>
+  </div>
+</div>

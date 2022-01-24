@@ -1,56 +1,27 @@
 <div class="main-page" *ngIf="isLog">
-  <div class="date-picker">
-    <div  class="date-picker-div">
-      <mat-form-field appearance="fill">
-        <mat-label>Enter a date range</mat-label>
-        <mat-date-range-input [rangePicker]="picker">
-          <input
-            matStartDate
-            placeholder="Start date"
-            [(ngModel)]="startDate"
-          />
-          <input
-            matEndDate
-            placeholder="End date"
-            [(ngModel)]="endDate"
-            (dateChange)="submit()"
-          />
-        </mat-date-range-input>
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-date-range-picker #picker></mat-date-range-picker>
-      </mat-form-field>
-
-      <!-- <div>{{ startDate }}</div>
-      <div>{{ endDate }}</div> -->
-
-      <!-- <button class="btn btn-primary" (click)="submit()">Submit</button> -->
-    </div>
-    <div class="list-of-cars-div">
-      <div *ngFor="let car of allCarsHistory; index as i">
-        <button class="mat-focus-indicator mat-raised-button mat-button-base mat-primary" style="margin-top: 5px;" (click)="changeUnitId(car.unit_id)">{{ car.reg_broj }}</button>
+  <div class="navigation">
+    <div class="navigation-navbar">
+      <div class="navigation-navbar-item">
+        <a routerLink="users" routerLinkActive="active"><span>Users</span></a>
+      </div>
+      <div class="navigation-navbar-item">
+        <a routerLink="units" routerLinkActive="active"><span>Units</span></a>
+      </div>
+      <div class="navigation-navbar-item">
+        <a routerLink="history" routerLinkActive="active"><span>History</span></a>
+      </div>
+      <div class="navigation-navbar-item">
+        <a routerLink="monitoring" routerLinkActive="active"><span>Monitoring</span></a>
+      </div>
+      <div class="navigation-navbar-item">
+        <a routerLink="userunits" routerLinkActive="active"> <span> User Units</span></a>
+      </div>
+      <div class="navigation-navbar-item">
+        <button (click)="logOut()" type="button" class="logOutButton">Log Out</button>
       </div>
     </div>
-    <div style="margin-top: 5px;">
-      <div class="table-wrapper">
-        <table class="table">
-          <thead class="thead">
-            <tr class="table-tr">
-              <th class="table-th">Drzava</th>
-              <th  class="table-th">Grad</th>
-            </tr>
-          </thead>
 
-          <tr *ngFor="let city of citiesHistory; index as i">
-            <td>
-              {{ city.country }}
-            </td>
-            <td>
-              {{ city.city }}
-            </td>
-          </tr>
-        </table>
-      </div>
-    </div>
+    <router-outlet></router-outlet>
   </div>
   <div class="right-sidebar-container">
     <div id="map"></div>

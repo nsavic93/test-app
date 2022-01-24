@@ -1,0 +1,58 @@
+<div class="users-component">
+  <button
+    style="width: 30%; align-self: flex-start"
+    mat-button
+    (click)="routerNavigateToMain()"
+  >
+    Back
+  </button>
+  <div class="date-picker-div">
+    <mat-form-field appearance="fill">
+      <mat-label>Enter a date range</mat-label>
+      <mat-date-range-input [rangePicker]="picker">
+        <input matStartDate placeholder="Start date" [(ngModel)]="startDate" />
+        <input
+          matEndDate
+          placeholder="End date"
+          [(ngModel)]="endDate"
+          (dateChange)="submit()"
+        />
+      </mat-date-range-input>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+  </div>
+  <div class="list-of-cars-div">
+    <div *ngFor="let car of allCarsHistory; index as i">
+      <button
+        class="mat-focus-indicator mat-raised-button mat-button-base mat-primary"
+        style="margin-top: 5px"
+        (click)="changeUnitId(car.unit_id)"
+      >
+        {{ car.reg_broj }}
+      </button>
+    </div>
+  </div>
+
+  <div class="list-of-cities">
+    <div class="table-wrapper">
+      <table class="table table-dark">
+        <thead class="thead">
+          <tr class="table-tr">
+            <th class="table-th">Drzava</th>
+            <th class="table-th">Grad</th>
+          </tr>
+        </thead>
+
+        <tr *ngFor="let city of citiesHistory; index as i">
+          <td>
+            {{ city.country }}
+          </td>
+          <td>
+            {{ city.city }}
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>

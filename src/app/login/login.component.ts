@@ -7,11 +7,8 @@ import { LoginService } from '../service/login.service';
   styleUrls: ['../app.component.css'],
 })
 export class LoginComponent {
-  usersFromDb;
   constructor(private loginService: LoginService) {}
-  ngOnInit() {
-    this.getUsersFromApi();
-  }
+  ngOnInit() {}
 
   username;
   password;
@@ -21,11 +18,5 @@ export class LoginComponent {
   login() {
     this.loginService.log(this.username, this.password);
     console.log('OK');
-  }
-  getUsersFromApi() {
-    this.loginService.getUsers().subscribe((response) => {
-      console.log(response);
-      this.usersFromDb = response;
-    });
   }
 }

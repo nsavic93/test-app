@@ -1,0 +1,85 @@
+<div class="users-component">
+  <button style="width: 30%; align-self: flex-start;" mat-button (click)="routerNavigateToMain()">Back</button>
+  <h1 style="align-self: center;">UNITS</h1>
+  <table class="table table-dark" style="width: 100%; margin-top: 50px">
+    <thead>
+      <tr>
+        <th scope="col">Unit ID</th>
+        <th scope="col">Marka</th>
+        <th scope="col">Model</th>
+        <th scope="col">Options</th>
+        
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let unit of unitsFromDb | async">
+        <td>{{ unit.unt_id }}</td>
+        <td>{{ unit.unt_marka }}</td>
+        <td>{{ unit.unt_model }}</td>
+
+        <td>
+          <div class="options-div">
+            <button class="optionsButton" (click)="openEditForm(unit.unt_id)">
+              <fa-icon [icon]="faUserEdit"></fa-icon>
+            </button>
+            <button class="optionsButton" (click)="deleteModel(unit.unt_id)">
+              <fa-icon [icon]="faTrashAlt"></fa-icon>
+            </button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <button class="mat-raised-button mat-button-base mat-primary" style="width: 60%; align-self: center;" (click)="openCreateForm()">Add New</button>
+</div>
+
+<div class="user-component-create" *ngIf="toggleCreateForm">
+  <div class="user-component-create-form">
+    <input
+      type="text"
+      placeholder="Marka"
+      class="user-component-create-form-input"
+      [(ngModel)]="marka"
+    />
+    <input
+      type="text"
+      placeholder="Model"
+      class="user-component-create-form-input"
+      [(ngModel)]="model"
+    />
+
+    <button class="user-component-create-form-button" (click)="createNewUnit()">
+      ADD
+    </button>
+    <button
+      class="user-component-create-form-button"
+      (click)="closeCreateForm()"
+    >
+      CANCEL
+    </button>
+  </div>
+</div>
+
+<div class="user-component-create" *ngIf="toggleEditForm">
+  <div class="user-component-create-form">
+    <input
+      type="text"
+      placeholder="Marka"
+      class="user-component-create-form-input"
+      [(ngModel)]="marka"
+    />
+    <input
+      type="text"
+      placeholder="Model"
+      class="user-component-create-form-input"
+      [(ngModel)]="model"
+    />
+
+    <button class="user-component-create-form-button" (click)="editUnit()">
+      Save
+    </button>
+    <button class="user-component-create-form-button" (click)="closeEditForm()">
+      CANCEL
+    </button>
+  </div>
+</div>

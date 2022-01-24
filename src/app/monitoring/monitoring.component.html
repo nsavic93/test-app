@@ -1,0 +1,15 @@
+<div class="users-component">
+  <button style="width: 30%; align-self: flex-start;" mat-button (click)="routerNavigateToMain()">Back</button>
+  <h1>MONITORING</h1>
+  <div class="list-of-cars-div">
+    <div *ngFor="let car of allCarsHistory; index as i">
+      <button
+        class="mat-focus-indicator mat-raised-button mat-button-base mat-primary"
+        style="margin-top: 5px"
+        (click)="changeUnitId(car.unit_id)"
+      >
+        {{ car.reg_broj }}
+      </button>
+    </div>
+  </div>
+</div>

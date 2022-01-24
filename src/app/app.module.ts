@@ -17,9 +17,24 @@ import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 import { DatePipe } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
+import { UsersComponent } from './users/users.component';
+import { HistoryComponent } from './history/history.component';
+import { UserUnitsComponent } from './userUnits/userunits.component';
+import { MonitoringComponent } from './monitoring/monitoring.component';
+import { UnitsComponent } from './units/units.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, MainComponent],
+  declarations: [
+    AppComponent,
+    LoginComponent,
+    MainComponent,
+    UsersComponent,
+    HistoryComponent,
+    UserUnitsComponent,
+    MonitoringComponent,
+    UnitsComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -33,7 +48,8 @@ import { MatButtonModule } from '@angular/material/button';
     MatInputModule,
     MatNativeDateModule,
     FormsModule,
-    MatButtonModule
+    MatButtonModule,
+    FontAwesomeModule,
   ],
   providers: [LoginService, DataService, DatePipe],
   bootstrap: [AppComponent],

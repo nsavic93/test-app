@@ -1,0 +1,45 @@
+<div class="users-component">
+  <button style="width: 30%; align-self: flex-start;" mat-button (click)="routerNavigateToMain()">Back</button>
+  <h1>USER UNITS</h1>
+  
+    <ul class="users-units-list">
+        <li class="users-units-list">Ime i prezime</li>
+        <li class="users-units-list-li" *ngFor="let user of usersFromDb | async" >
+          <div (click)="getUnitsByUserId(user.usr_id)" class="user-units-list-item">
+            {{user.usr_firstname}} {{ user.usr_lastname }} 
+          </div> 
+        </li>
+    </ul>
+    <h2>User units</h2>
+    <ng-container *ngIf="userUnitsFromDb.value.length; else noUnits">
+      <ul class="users-units-list">
+        <li  class="users-units-list-li" *ngFor="let unit of userUnitsFromDb | async" >
+       
+          <div>
+            {{unit.unt_marka}} {{ unit.unt_model }} 
+            <input type="checkbox" [checked]="!unit.unt_dostupan" (change)="changeUserUnitData(unit.unt_dostupan, unit.unt_id, unit.usr_id , unit.usr_unt_id)">
+          </div>
+          
+        </li>
+    </ul>
+    </ng-container>
+    <ng-template #noUnits>
+      <h3>No units for this User!</h3>
+    </ng-template>
+    
+
+    <h2>Available units</h2>
+    <ng-container *ngIf="availableUnitsFromDb.value.length; else noAvailableUnits">
+    <ul class="users-units-list">
+        <li class="users-units-list-li" *ngFor="let unit of availableUnitsFromDb | async" >
+          <div >
+            {{unit.unt_marka}} {{ unit.unt_model }} 
+            <input type="checkbox" [checked]="!unit.unt_dostupan" (change)="changeUserUnitData(unit.unt_dostupan, unit.unt_id, unit.usr_id , unit.usr_unt_id)">
+          </div> 
+        </li>
+    </ul>
+  </ng-container>
+    <ng-template #noAvailableUnits>
+      <h3>No available units</h3>
+    </ng-template>
+</div>
